@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Packet Sniffer Pro</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+<header>
+  <div>
+    <h1>Network Packet Sniffer</h1>
+    <p>Real-Time Traffic Analyzer • CN Project</p>
+  </div>
+  <div class="status"><span id="dot"></span><span id="statusText">Stopped</span></div>
+</header>
+
+<section class="controls">
+  <button onclick="startCapture()">Start Capture</button>
+  <button onclick="stopCapture()">Stop Capture</button>
+  <button class="secondary" onclick="clearData()">Clear</button>
+  <a class="export" href="/api/export">Export CSV</a>
+</section>
+
+<section class="cards">
+  <div class="card"><span>Total Packets</span><strong id="totalPackets">0</strong></div>
+  <div class="card"><span>Total Traffic</span><strong id="totalBytes">0 B</strong></div>
+  <div class="card"><span>TCP</span><strong id="tcp">0</strong></div>
+  <div class="card"><span>UDP</span><strong id="udp">0</strong></div>
+  <div class="card"><span>DNS</span><strong id="dns">0</strong></div>
+  <div class="card"><span>ARP</span><strong id="arp">0</strong></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head"><h2>Protocol Distribution</h2></div>
+  <div id="bars" class="bars"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Captured Packets</h2>
+    <div class="filters">
+      <select id="protocolFilter" onchange="renderPackets()">
+        <option value="">All Protocols</option>
+        <option>TCP</option><option>UDP</option><option>DNS</option>
+        <option>ICMP</option><option>ARP</option><option>IPv4</option><option>IPv6</option>
+      </select>
+      <input id="filter" placeholder="Search IP / port..." oninput="renderPackets()">
+    </div>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <thead><tr>
+      <th>ID</th><th>Time</th><th>Source IP</th><th>Destination IP</th>
+      <th>Protocol</th><th>Network</th><th>Source Port</th><th>Dest. Port</th>
+      <th>Flags</th><th>Size</th>
+    </tr></thead>
+    <tbody id="packetBody"></tbody>
+  </table>
+  </div>
+</section>
+
+<div id="modal" class="modal hidden" onclick="closeModal(event)">
+  <div class="modalbox" onclick="event.stopPropagation()">
+    <div class="modalhead"><h2>Packet Details</h2><button class="secondary" onclick="hideModal()">Close</button></div>
+    <pre id="detail"></pre>
+  </div>
+</div>
+
+<footer>Network Packet Sniffer Pro • Python • Scapy • Flask</footer>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
